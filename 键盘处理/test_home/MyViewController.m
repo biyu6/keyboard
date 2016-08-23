@@ -13,7 +13,6 @@
 #define iPhone4 ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 960), [[UIScreen mainScreen] currentMode].size) : NO)
 
 @interface MyViewController ()<UITextFieldDelegate>
-/***/
 @property (nonatomic, weak)UITextField *idCardTF;
 @end
 
@@ -22,14 +21,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor orangeColor];
-
+    
     UITextField *idCardTF = [[UITextField alloc] initWithFrame:CGRectMake(50, 300, 300, 44)];
     idCardTF.backgroundColor = [UIColor grayColor];
     idCardTF.ry_inputAccessoryText = @"请输入身份证号";//键盘上面的输入提示
     idCardTF.ry_inputType = RYIDCardInputType;//自定义键盘  身份证键盘 、浮点数键盘、整数键盘
-//    idCardTF.keyboardType =  UIKeyboardTypeNumberPad; //系统键盘
-//    idCardTF.ry_interval = 6;//隔多少位空一格;限制字数时无效
-
+    //    idCardTF.keyboardType =  UIKeyboardTypeNumberPad; //系统键盘
+    //    idCardTF.ry_interval = 6;//隔多少位空一格;限制字数时无效
+    
     idCardTF.backgroundColor = [UIColor grayColor];
     idCardTF.font= [UIFont systemFontOfSize:13];
     idCardTF.textColor = [UIColor redColor];
@@ -42,6 +41,7 @@
     [self.view addSubview:idCardTF];
     self.idCardTF = idCardTF;
 }
+
 - (void)textFieldDidBeginEditing:(UITextField *)textField{
     //判断如果是iPhone4系列的就让view往上移动
     if (iPhone4 && textField == _idCardTF) {
@@ -56,13 +56,20 @@
     NSString * newText = [textField textInRange:selectedRange];
     if(newText.length>0) return;
     //不允许输入空格
-//    textField.text = [textField.text stringByReplacingOccurrencesOfString:@" " withString:@""];
+    //    textField.text = [textField.text stringByReplacingOccurrencesOfString:@" " withString:@""];
     //限制联想输入时字数问题
     textField.text = textField.text.length > 18 ? [textField.text substringToIndex:18] : textField.text;
+    //限制联想输入时只能输入谷底的字母和数字
+    //    NSCharacterSet *cs = [[NSCharacterSet characterSetWithCharactersInString:@"Xx0123456789"] invertedSet];
+    //    textField.text = [[textField.text componentsSeparatedByCharactersInSet:cs] componentsJoinedByString:@""];
+    
     
 }
 //- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
-//    return  (textField.text.length - range.length + string.length) <= 18;
+//设置只能输入字母数字  和 文本框最大长度
+//    NSCharacterSet *cs = [[NSCharacterSet characterSetWithCharactersInString:@"Xx0123456789"] invertedSet];
+//    NSString *filtered = [[string componentsSeparatedByCharactersInSet:cs] componentsJoinedByString:@""];
+//    return [string isEqualToString:filtered] && (textField.text.length - range.length + string.length) <= 18;
 //}
 
 
